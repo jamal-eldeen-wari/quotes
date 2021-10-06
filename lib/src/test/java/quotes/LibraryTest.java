@@ -3,11 +3,13 @@
  */
 package quotes;
 
+import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,4 +34,24 @@ class LibraryTest {
         assertEquals(authorTest, quotes.getAuthor());
         assertEquals(textTest,quotes.getText());
     }
+
+    @Test void ResponseCodeTest() throws IOException {
+        URL site = new URL("http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en");
+        HttpURLConnection connection = (HttpURLConnection) site.openConnection();
+        assertEquals(200,connection.getResponseCode());
+    }
+
+   @Test void constructorOnlineQuote(){
+        OnlineQoute onlineQoute = new OnlineQoute("Ask no questions, and you'll be told no lies","Charles Dickens");
+        String textTest = onlineQoute.getQuoteText();
+        String authorTest = onlineQoute.getQuoteAuthor();
+
+        assertEquals(textTest, onlineQoute.getQuoteText());
+        assertEquals(authorTest,onlineQoute.getQuoteAuthor());
+
+   }
+//   @Test void writeTest() throws IOException {
+//       Writer writer = new FileWriter("recentquotes.json",true);
+//
+//   }
 }
